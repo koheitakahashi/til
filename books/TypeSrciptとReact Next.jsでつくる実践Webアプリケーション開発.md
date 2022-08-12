@@ -51,3 +51,142 @@
 - テストが容易
 
 目指すは、できる限り抽象的であること。
+
+### 型アサーション
+
+`as XXXX` で明示的に型を指定できる。
+TypeScript が具体的な方を知ることができないケースで使う。しかし、実行時にエラーが起きる可能性があるので注意する。
+
+### 型エイリアス
+
+同じ型を何度も利用する場合に `type 型名 = 型` で、その型を複数回参照できる。
+interface は後から拡張可能であるが、型エイリアスはそうはいかない。
+
+### Enum 型
+
+```typescript
+enum Direction = {
+  'Up': 0,
+  'Down': 1,
+}
+
+let direction: Direction = Direction.left
+console.log(direction)
+```
+
+### ジェネリック型
+
+型を抽象化し、外部から具体的な型を指定できる機能。
+
+```typescript
+// T はクラス内で利用する仮の方の名前
+class Queue<T> {
+  private array: T[] = []
+
+  push(item: T) {
+    this.array.push(item)
+  }
+
+  pop(): T | undefined {
+    return this.array.shift()
+  }
+}
+
+// T が number であることを外部から強制
+const queue = new Queue<number>()
+queue.push(111)
+queue.push(112)
+queue.push('hoge')
+
+// T が string であることを外部から強制
+const queueStr = new Queue<string>();
+queueStr.push('hoge')
+queueStr.push('fuga')
+queueStr.pop(111)
+```
+
+### Union 型 / Intersection 型
+
+少し複雑な方を表現したいときに使う。
+指定した複数の方の和集合を意味する Union 型。積集合 Intersection 型。
+
+```typescript
+type Identity = {
+  id: number | string;
+  name: string;
+}
+
+type Contact = {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+type IdentityOrContact = Identity | Contact;
+
+const id: IdentityOrContact = {
+  id: '111',
+  name: "Takuya"
+}
+
+const contact: IdentityOrContact = {
+  name: "Takuya",
+  email: "test@example.com",
+  phone: '01235'
+}
+
+type Employee = IdentityOrContact & Contact
+
+const employee: Employee = {
+  id: '111',
+  name: "Takuya",
+  email: "test@exampmle.com",
+  phone: '01235'
+}
+
+// これはエラーになる
+const employee2: Employee = {
+  email: "test@exampmle.com",
+  phone: '01235'
+}
+```
+
+### never 型が有効なケース
+
+条件分岐に漏れがないことを保証するケース。
+
+### 型ガード
+
+if文やswitch 文の条件分岐にて型チェックを行った際、条件分岐ブロック以降は変数の型を絞り込まれる推論が行われる。
+
+```typescript
+function addOne(value: number | string) {
+    if (typeof value === 'number') {
+        return value + 1;
+    } else {
+        return value;
+    }
+}
+```
+
+### keyof オペレーター
+
+その方が持つ各プロパティの型の Union 型を返す。o
+
+
+```typescript
+interface User {
+  name: string;
+  age: number;
+  email: string;
+}
+
+type UserKey = keyof User // 'name' | 'age' | 'email' のいずれかになる
+
+function printUserKey(str: UserKey) {
+  console.log(str)
+}
+
+printUserKey('name')
+printUserKey('hoge') // これはエラーになる
+```
