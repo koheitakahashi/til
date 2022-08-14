@@ -190,3 +190,10 @@ function printUserKey(str: UserKey) {
 printUserKey('name')
 printUserKey('hoge') // これはエラーになる
 ```
+
+### React がレンダリングするまでの流れ
+
+- JSX で書かれたコンポーネントを、webpack が JS コードに変換する
+- JS コードをブラウザが読み込み実行する
+- JS がブラウザの表示内容を書き換えるときに、仮想DOMを構築する
+- 前回構築した仮想DOMの差分と比較して差分があるところだけを更新する
