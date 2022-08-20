@@ -171,7 +171,7 @@ function addOne(value: number | string) {
 
 ### keyof オペレーター
 
-その方が持つ各プロパティの型の Union 型を返す。o
+その方が持つ各プロパティの型の Union 型を返す。
 
 
 ```typescript
@@ -197,3 +197,39 @@ printUserKey('hoge') // これはエラーになる
 - JS コードをブラウザが読み込み実行する
 - JS がブラウザの表示内容を書き換えるときに、仮想DOMを構築する
 - 前回構築した仮想DOMの差分と比較して差分があるところだけを更新する
+
+### SSR・SSG
+
+- SSG とは
+  - サーバーサイド JavaScript 実行環境でリクエストに応じてページを生成し HTML を返すこと
+  - メリット
+    - サーバーサイドでレンダリングするためサイト表示の高速になる
+    - SEO を向上させることが可能
+  - デメリット
+    - Node.js などのサーバーサイドのJavaScript実行環境が必要
+    - サーバーのCPU負荷が増える
+    - サーバーとクライアントでJSのロジックが分散してしまう
+- SSGとは
+  - 事前に静的ファイルとして生成してデプロイする仕組み
+  - SSR はリクエストの度にHTMLを生成するためサーバーの負荷が高い
+
+### その他
+
+- `??` とは
+  [Null 合体演算子 \(??\) \- JavaScript \| MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator)
+
+- しっかり理解できていないところ
+  - Provider・Context について
+  - 基本的な export・import について
+
+# 感想
+
+TypeScript・React・Next.js の概観を掴むのには適していると思われる。一方で、本書で記載されているコードをそのまま写経しても動かない箇所がいくつもあった(`import type`の記載漏れや、ファイル名が異なるなど)。
+写経しても動かない部分はリポジトリのソースコードと見比べて、なんとか動いてデプロイすることはできた。
+
+# その他
+- [書評『TypeScriptとReact/Next\.jsでつくる 実践Webアプリケーション開発』 \- uhyo/blog](https://blog.uhy.ooo/entry/2022-08-11/typescript-react-nextjs/)
+  - この記事では本書に対して苦言が呈されている
+- 成果物
+  - https://nextjs-gihyo-book-gamma.vercel.app
+  - https://github.com/koheitakahashi/nextjs-gihyo-book
